@@ -8,6 +8,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.firebase.ui.auth.AuthUI
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -15,10 +19,13 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.gson.Gson
 import org.json.JSONArray
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,10 +33,10 @@ class MainActivity : AppCompatActivity() {
         val logoutBtn: Button = findViewById(R.id.btnLogout)
         firebaseRemoteConfig = Firebase.remoteConfig
         firebaseAuth = FirebaseAuth.getInstance()
+        firebaseAnalytics = Firebase.analytics
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600
         }
-
         firebaseRemoteConfig.setConfigSettingsAsync(configSettings)
         firebaseRemoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -67,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                     val dialogBuilder = AlertDialog.Builder(this)
                     dialogBuilder.setMessage(logoutMessage)
                     dialogBuilder.setPositiveButton(confirmButton) { dialogInterface, which ->
-                        firebaseAuth.signOut()
+                        signOut()
                         val intentToLoginScreen = Intent(this, LoginActivity::class.java)
                         startActivity(intentToLoginScreen)
                     }
@@ -80,6 +87,21 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "values received un-successful", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun signOut() {
+        firebaseAuth.signOut()
+        AuthUI.getInstance().signOut(this)
+        captureSignOutEvent()
+    }
+
+    private fun captureSignOutEvent() {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss", Locale.getDefault())
+        val logoutTimeStamp = sdf.format(Date())
+        firebaseAnalytics.logEvent("Logout") {
+            param("event_name", "Logout")
+            param("event_time", logoutTimeStamp)
         }
     }
 

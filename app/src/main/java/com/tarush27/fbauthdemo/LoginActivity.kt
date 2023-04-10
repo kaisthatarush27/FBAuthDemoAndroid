@@ -18,7 +18,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var loginWithGoogleBtn: SignInButton
-    private lateinit var fbAuthStateListener: FirebaseAuth.AuthStateListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)

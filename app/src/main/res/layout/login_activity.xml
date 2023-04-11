@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Login Page"
+        android:text="Login"
         android:textColor="#000000"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,86 +20,88 @@
 
     <TextView
         android:id="@+id/txtSignInGoogleOrEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:text="Either sign in with your email and password or sign in with google."
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtLoginPage" />
 
-    <TextView
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtUserNameEmail"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="20dp"
-        android:text="User name/Email"
+        android:layout_marginEnd="12dp"
+        android:hint="Enter your email"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtSignInGoogleOrEmail" />
+        app:layout_constraintTop_toBottomOf="@id/txtSignInGoogleOrEmail">
 
-    <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:inputType="textEmailAddress"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtUserNameEmail"
-        tools:text="your@gmail.com" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
 
-    <TextView
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtEnterYourPwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Enter your password"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtEmail" />
-
-    <EditText
-        android:id="@+id/txtPwd"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="12dp"
+        android:hint="Enter your password"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtEnterYourPwd"
-        tools:text="Tarush@27" />
+        app:layout_constraintTop_toBottomOf="@id/txtUserNameEmail">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtPwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:insetTop="2dp"
+        android:insetBottom="5dp"
         android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="#56377E"
+        app:backgroundTint="#ffffff"
+        app:cornerRadius="12dp"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.585" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="OR"
-        android:textColor="@color/black"
-        android:textSize="25sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginButton" />
+        app:layout_constraintTop_toBottomOf="@id/txtEnterYourPwd"
+        app:layout_constraintVertical_bias="0.585"
+        app:strokeColor="#9F7BCD"
+        app:strokeWidth="1.5dp" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleSignInBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="140dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_google_sign_in_button"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

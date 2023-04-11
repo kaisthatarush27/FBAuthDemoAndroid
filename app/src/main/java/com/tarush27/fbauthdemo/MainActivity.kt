@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                     dialogBuilder.setMessage(logoutMessage)
                     dialogBuilder.setPositiveButton(confirmButton) { dialogInterface, which ->
                         signOut()
+                        finish()
                         val intentToLoginScreen = Intent(this, LoginActivity::class.java)
                         startActivity(intentToLoginScreen)
                     }

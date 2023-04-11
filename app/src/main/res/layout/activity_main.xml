@@ -8,26 +8,37 @@
 
     <TextView
         android:id="@+id/welcomeMsgTv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:textColor="@color/black"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.34"
-        tools:text="Hello" />
+        tools:text="Hello, Welcome to the Flutter World" />
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="25dp"
+        android:insetTop="2dp"
+        android:insetBottom="5dp"
         android:text="logout"
+        android:textColor="#56377E"
+        app:backgroundTint="#ffffff"
+        app:cornerRadius="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcomeMsgTv" />
+        app:layout_constraintTop_toBottomOf="@id/welcomeMsgTv"
+        app:strokeColor="#9F7BCD"
+        app:strokeWidth="1.5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

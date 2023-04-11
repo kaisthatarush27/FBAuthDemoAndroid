@@ -11,6 +11,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.gms.common.SignInButton
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -25,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var email: EditText
     private lateinit var password: EditText
+    private lateinit var emailError: TextInputLayout
+    private lateinit var passwordError: TextInputLayout
     private lateinit var loginWithGoogleBtn: SignInButton
     private lateinit var simpleDateFormat: SimpleDateFormat
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAnalytics = Firebase.analytics
         initializeUi()
-
     }
 
 
@@ -47,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
                 param("event_time", googleLoginTimeStamp)
                 param("login_method", "Google")
             }
+            finish()
             val intentToMainActivity = Intent(this, MainActivity::class.java)
             startActivity(intentToMainActivity)
         } else {
@@ -57,7 +60,6 @@ class LoginActivity : AppCompatActivity() {
                 param("event_time", googleLoginFailedTimeStamp)
                 param("login_method", "Google")
                 param("error_msg", "${result.idpResponse?.error?.message}")
-                //result.idpResponse?.error?.message!!
             }
         }
     }
@@ -81,6 +83,8 @@ class LoginActivity : AppCompatActivity() {
     private fun initializeUi() {
         email = findViewById(R.id.txtEmail)
         password = findViewById(R.id.txtPwd)
+        emailError = findViewById(R.id.txtUserNameEmail)
+        passwordError = findViewById(R.id.txtEnterYourPwd)
         loginWithGoogleBtn = findViewById(R.id.googleSignInBtn)
         val loginBtn: Button = findViewById(R.id.loginButton)
         loginBtn.setOnClickListener {
@@ -103,12 +107,14 @@ class LoginActivity : AppCompatActivity() {
         val userPwd = password.text.toString()
 
         if (userEmail.isEmpty()) {
-            Toast.makeText(this, "plz enter email", Toast.LENGTH_SHORT).show()
+            emailError.error = "PLease enter email"
             return
         }
 
+
+
         if (userPwd.isEmpty()) {
-            Toast.makeText(this, "plz enter password", Toast.LENGTH_SHORT).show()
+            passwordError.error = "PLease enter password"
             return
         }
 
@@ -122,6 +128,7 @@ class LoginActivity : AppCompatActivity() {
                 }
                 val intentToMainActivity = Intent(this, MainActivity::class.java)
                 startActivity(intentToMainActivity)
+                finish()
             } else {
                 firebaseAnalytics.logEvent("Login_Failed") {
                     param("event_name", "LoginFailed")

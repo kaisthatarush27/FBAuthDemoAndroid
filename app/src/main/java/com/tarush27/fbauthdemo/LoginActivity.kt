@@ -1,6 +1,7 @@
 package com.tarush27.fbauthdemo
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -30,8 +31,27 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var passwordError: TextInputLayout
     private lateinit var loginWithGoogleBtn: SignInButton
     private lateinit var simpleDateFormat: SimpleDateFormat
+    private lateinit var sharedPreferences: SharedPreferences
+    private var isUserLoggedInWithEmail = false
+    private var isUserLoggedInWithGoogle = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences = getSharedPreferences("FBAuth", MODE_PRIVATE)
+        isUserLoggedInWithEmail =
+            sharedPreferences.getBoolean("loginOccurredUsingEmail", isUserLoggedInWithEmail)
+        isUserLoggedInWithGoogle =
+            sharedPreferences.getBoolean("loginOccurredUsingGoogle", isUserLoggedInWithGoogle)
+        if (isUserLoggedInWithEmail) {
+            val intentToMainActivity = Intent(this, MainActivity::class.java)
+            startActivity(intentToMainActivity)
+            finish()
+        }
+
+        if (isUserLoggedInWithGoogle) {
+            val intentToMainActivity = Intent(this, MainActivity::class.java)
+            startActivity(intentToMainActivity)
+            finish()
+        }
         setContentView(R.layout.login_activity)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseAnalytics = Firebase.analytics
@@ -49,6 +69,11 @@ class LoginActivity : AppCompatActivity() {
                 param("event_time", googleLoginTimeStamp)
                 param("login_method", "Google")
             }
+            sharedPreferences = getSharedPreferences("FBAuth", MODE_PRIVATE)
+            val sharedPrefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
+            isUserLoggedInWithGoogle = true
+            sharedPrefsEditor.putBoolean("loginOccurredUsingGoogle", isUserLoggedInWithGoogle)
+            sharedPrefsEditor.apply()
             finish()
             val intentToMainActivity = Intent(this, MainActivity::class.java)
             startActivity(intentToMainActivity)
@@ -126,6 +151,11 @@ class LoginActivity : AppCompatActivity() {
                     param("user_email", userEmail)
                     param("login_method", "Email")
                 }
+                sharedPreferences = getSharedPreferences("FBAuth", MODE_PRIVATE)
+                val sharedPrefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
+                isUserLoggedInWithEmail = true
+                sharedPrefsEditor.putBoolean("loginOccurredUsingEmail", isUserLoggedInWithEmail)
+                sharedPrefsEditor.apply()
                 val intentToMainActivity = Intent(this, MainActivity::class.java)
                 startActivity(intentToMainActivity)
                 finish()

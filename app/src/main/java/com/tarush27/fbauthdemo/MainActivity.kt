@@ -1,6 +1,7 @@
 package com.tarush27.fbauthdemo
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var sharedPreferences: SharedPreferences
+    private var isUserLoggedInWithEmail = false
+    private var isUserLoggedInWithGoogle = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -75,6 +79,17 @@ class MainActivity : AppCompatActivity() {
                     dialogBuilder.setMessage(logoutMessage)
                     dialogBuilder.setPositiveButton(confirmButton) { dialogInterface, which ->
                         signOut()
+                        sharedPreferences = getSharedPreferences("FBAuth", MODE_PRIVATE)
+                        val sharedPrefsEditor: SharedPreferences.Editor = sharedPreferences.edit()
+                        sharedPrefsEditor.putBoolean(
+                            "loginOccurredUsingEmail",
+                            isUserLoggedInWithEmail
+                        )
+                        sharedPrefsEditor.putBoolean(
+                            "loginOccurredUsingGoogle",
+                            isUserLoggedInWithGoogle
+                        )
+                        sharedPrefsEditor.apply()
                         finish()
                         val intentToLoginScreen = Intent(this, LoginActivity::class.java)
                         startActivity(intentToLoginScreen)
